@@ -1,5 +1,6 @@
 # render_template must be imported to render html templates
-from flask import Flask, render_template
+# request to use "get" method
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
