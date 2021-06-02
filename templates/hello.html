@@ -7,4 +7,11 @@
         <input type="text" placeholder="last name" name="last_name">
         <input type="submit">
     </form>
+
+    <hr>
+    {% for i in todo %}
+        <ul>
+            {{ i.content }}
+        </ul>
+    {% endfor %}
 {% endblock content %}

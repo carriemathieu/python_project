@@ -26,13 +26,14 @@ class TodoModel(db.Model):
 @app.route('/', methods=['GET', 'POST'])
 def hello_world():
     request_method = request.method
+    todo = TodoModel.query.all()
     if request_method == 'POST':
         # print outs data that was input in form
         first_name = request.form['first_name']
         # redirect to url for name
         return redirect(url_for('name', first_name=first_name))
 
-    return render_template('hello.html', request_method=request_method)
+    return render_template('hello.html', request_method=request_method, todo=todo)
 
 @app.route('/name/<string:first_name>')
 def name(first_name):
@@ -42,7 +43,9 @@ def name(first_name):
 def todo():
     todo_form = Todo()
     if todo_form.validate_on_submit():
-        print(todo_form.content.data)
+        todo = TodoModel(content = todo_form.content.data)
+        db.session.add(todo)
+        db.session.commit()
         return redirect('/')
     return render_template('todo.html', form=todo_form)
 
