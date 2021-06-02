@@ -1,11 +1,26 @@
 from flask import Flask, render_template, request, redirect, url_for
 from forms import Todo
+from flask_sqlalchemy import SQLAlchemy
 
 # creates instance of flask & assigns to app var
 app = Flask(__name__)
 
 # protects against CSRF
 app.config['SECRET_KEY'] = 'password'
+# sets up SQLAlchemy DB
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tmp/test.db'
+# creates instance of DB
+db = SQLAlchemy(app)
+
+class TodoModel(db.Model):
+    # creates column in DB for ID
+    id = db.Column(db.Integer, primary_key=True)
+    # 240 characters allowed for content
+    content = db.Column(db.String(240))
+
+    # return string representation of model
+    def __str__(self):
+        return f'{self.content}, {self.id}'
 
 # get and post requests
 @app.route('/', methods=['GET', 'POST'])
